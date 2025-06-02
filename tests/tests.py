@@ -4,12 +4,13 @@ from selenium import webdriver
 from auth import Auth  # Импортируйте класс Auth
 
 class TestMyApp(unittest.TestCase):
-    def setUp(self):
-        self.driver = webdriver.Chrome()
-        self.auth = Auth(self.driver, 'rkbshalov', 'Alesha123')  # Передайте логин и пароль
+    @classmethod
+    def setUpClass(cls):
+        cls.driver = webdriver.Chrome()
+        cls.auth = Auth(cls.driver, 'rkbshalov', 'Alesha123')
+        cls.auth.log_in()
 
-    def test_example(self):
-        self.auth.log_in()
+    def test_way_to_IKBR(cls):
 
     def tearDown(self):
         self.driver.quit()

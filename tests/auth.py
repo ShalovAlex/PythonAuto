@@ -1,6 +1,6 @@
 import time
+from time import sleep
 
-import Utilites
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -16,12 +16,28 @@ class Auth:
         self.driver.get('http://192.168.241.141/med2des/?f=NoUserForms')
         wait = WebDriverWait(self.driver, 10)
 
-        wait.until(EC.visibility_of_element_located((By.XPATH, "(//input[@cmpparse='Edit'])[1]"))).send_keys(self.username)
-        wait.until(EC.visibility_of_element_located((By.XPATH, "(//input[@cmpparse='Edit'])[2]"))).send_keys(self.password)
-        wait.until(EC.element_to_be_clickable((By.XPATH, "(//*[contains(text(), 'Войти')])[2]"))).click()
+        input_username = wait.until(EC.visibility_of_element_located(
+            (By.XPATH, "//input[@cmpparse='Edit' and @type='text']")))
+        input_username.click()
+        input_username.clear()
+        input_username.send_keys(self.username)
+
+        input_password = wait.until(EC.visibility_of_element_located(
+            (By.XPATH, "//input[@cmpparse='Edit' and @type='password']")))
+        input_password.click()
+        input_password.clear()
+        input_password.send_keys(self.password)
+
+        wait.until(EC.element_to_be_clickable((By.XPATH, "//div[@class='btn_caption btn_center minwidth']"))).click()
 
         time.sleep(2)
 
         self.driver.find_element(By.XPATH, "//div[@name='LPU']//input/../..//div[@class='cmbb-button']").click()
-        self.driver.find_element(By.XPATH, "//span[text()='6202 - Министерство Здравоохранения Республики Татарстан \"Республиканская Клиническая Офтальмологическая Больница\"']").click()
+        self.driver.find_element(By.XPATH, "//span[text()='6202 - Министерство Здравоохранения Республики Татарстан "
+                                           "\"Республиканская Клиническая Офтальмологическая Больница\"']").click()
         self.driver.find_element(By.XPATH, "//div[@name='Btn']//div[text()='Выбор']").click()
+
+        self.driver.find_element(By.XPATH, "//span[text()='Учет']").click()
+        self.driver.find_element(By.XPATH, "//span[text()='Учет беременных (МИС НП)']").click()
+        self.driver.find_element(By.XPATH, "//span[text()='Индивидуальные карты (МИС НП)']").click()
+
