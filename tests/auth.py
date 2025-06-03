@@ -37,7 +37,9 @@ class Auth:
                                            "\"Республиканская Клиническая Офтальмологическая Больница\"']").click()
         self.driver.find_element(By.XPATH, "//div[@name='Btn']//div[text()='Выбор']").click()
 
+        time.sleep(3)
+
         self.driver.find_element(By.XPATH, "//span[text()='Учет']").click()
-        self.driver.find_element(By.XPATH, "//span[text()='Учет беременных (МИС НП)']").click()
-        self.driver.find_element(By.XPATH, "//span[text()='Индивидуальные карты (МИС НП)']").click()
+        self.driver.find_element(By.XPATH, "//span[text()='Нозологические регистры']").click()
+        self.driver.find_element(By.XPATH, "//span[text()='Регистр ХПН']").click()
 
