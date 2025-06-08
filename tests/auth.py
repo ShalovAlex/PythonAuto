@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+
 class Auth:
     def __init__(self, driver, username, password):
         self.driver = driver
@@ -33,8 +34,7 @@ class Auth:
         time.sleep(2)
 
         self.driver.find_element(By.XPATH, "//div[@name='LPU']//input/../..//div[@class='cmbb-button']").click()
-        self.driver.find_element(By.XPATH, "//span[text()='6202 - Министерство Здравоохранения Республики Татарстан "
-                                           "\"Республиканская Клиническая Офтальмологическая Больница\"']").click()
+        self.driver.find_element(By.XPATH, "//*[starts-with(text(), '6202')]").click()
         self.driver.find_element(By.XPATH, "//div[@name='Btn']//div[text()='Выбор']").click()
 
         time.sleep(3)

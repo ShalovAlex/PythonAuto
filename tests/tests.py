@@ -7,6 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
 
+
 class TestMyApp(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -18,6 +19,7 @@ class TestMyApp(unittest.TestCase):
         wait = WebDriverWait(self.driver, 10)
 
         element = wait.until(EC.element_to_be_clickable((By.XPATH, "//div[contains(text(),'больных')]")))
+        time.sleep(0.5)
         element.click()
 
         input_field1 = wait.until(
@@ -38,22 +40,40 @@ class TestMyApp(unittest.TestCase):
         element1.click()
 
         try:
-            element = driver.find_element(By.XPATH, "(//span[text()='Авто Проверка Тест'])[1]")
-            print("Элемент найден")
-        except NoSuchElementException:
-            print("Элемент не найден")
+            # Проверяем наличие элемента
+            element = wait.until(EC.presence_of_element_located(
+                (By.XPATH, "(//span[text()='Авто Проверка Тест'])[1]")
+            ))
+            print("Элемент найден на странице")
 
+            # Проверяем, что элемент видимый
+            if element.is_displayed():
+                print("Элемент отображается на странице")
 
+                # Дожидаемся кликабельности
+                element = wait.until(EC.element_to_be_clickable(
+                    (By.XPATH, "(//span[text()='Авто Проверка Тест'])[1]")
+                ))
+                time.sleep(0.5)  # небольшая пауза для стабильности
 
+                # Выполняем клик
+                element.click()
+                print("Клик по элементу выполнен успешно")
+            else:
+                print("Элемент присутствует в DOM, но не отображается на странице")
+                raise Exception("Элемент не видим для взаимодействия")
 
-        self.assertTrue(True, "Тест дошёл до этого места")
-
-
+        except Exception as e:
+            print(f"Ошибка при работе с элементом: {str(e)}")
+            # Можно сделать скриншот для отладки
+            self.driver.save_screenshot("error_screenshot.png")
+            raise  # повторно поднимаем исключение, чтобы тест упал
 
     @classmethod
     def tearDownClass(cls):
         # Закрываем браузер после всех тестов
         cls.driver.quit()
+
 
 if __name__ == "__main__":
     unittest.main()
